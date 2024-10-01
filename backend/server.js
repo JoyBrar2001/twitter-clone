@@ -5,6 +5,7 @@ const { v2: cloudinary } = require("cloudinary");
 
 const authRoutes = require("./routes/auth.route");
 const userRoutes = require("./routes/user.route");
+const postRoutes = require("./routes/post.route");
 const connectToMongoDB = require("./db/connectToMongoDB");
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/post", postRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
