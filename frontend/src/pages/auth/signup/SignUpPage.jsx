@@ -2,17 +2,16 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 
 import XSvg from "../../../components/svgs/X";
+import useSignUp from "../../../hooks/useSignUp";
 
 import { MdOutlineMail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { MdPassword } from "react-icons/md";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
-import { QUERY_KEYS } from "../../../constants";
-
 const SignUpPage = () => {
+  const { signup, isError, isPending, error } = useSignUp();
+  
   const [formData, setFormData] = useState({
     email: "",
     username: "",
@@ -20,40 +19,9 @@ const SignUpPage = () => {
     password: "",
   });
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isError, isPending, error } = useMutation({
-    mutationFn: async ({ email, username, fullName, password }) => {
-      try {
-        const res = await fetch("/api/auth/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ email, username, fullName, password }),
-        });
-
-        const data = await res.json();
-        
-        if (!res.ok) {
-          throw new Error(data.error || "Failed to create account.");
-        }
-
-        return data;
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    },
-    onSuccess: () => {
-      toast.success("Account Created Successfully");
-      queryClient.invalidateQueries([QUERY_KEYS.AUTH_USER]);
-    },
-  });
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(formData);
+    signup(formData);
   };
 
   const handleInputChange = (e) => {

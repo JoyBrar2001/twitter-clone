@@ -5,6 +5,7 @@ import { IoCloseSharp } from "react-icons/io5";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../constants";
 import toast from "react-hot-toast";
+import useCreatePost from "../../hooks/useCreatePost";
 
 const CreatePost = () => {
   const [text, setText] = useState("");
@@ -16,35 +17,7 @@ const CreatePost = () => {
     queryKey: [QUERY_KEYS.AUTH_USER],
   });
 
-  const queryClient = useQueryClient();
-
-  const { mutate: createPost, isPending, isError, error } = useMutation({
-    mutationFn: async ({ text, img }) => {
-      try {
-        const res = await fetch("/api/post/create", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ text, img }),
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || "Something went wrong");
-        }
-
-        return data;
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
-    onSuccess: () => {
-      toast.success("Post created successfully");
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.POSTS] });
-    },
-  });
+  const { createPost, isPending, isError, error } = useCreatePost();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -63,8 +36,6 @@ const CreatePost = () => {
       reader.readAsDataURL(file);
     }
   };
-
-  console.log(text)
 
   return (
     <div className='flex p-4 items-start gap-4 border-b border-gray-700'>

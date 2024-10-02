@@ -8,47 +8,19 @@ import { MdPassword } from "react-icons/md";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { QUERY_KEYS } from "../../../constants";
+import useLogin from "../../../hooks/useLogin";
 
 const LoginPage = () => {
+  const { login, isError, isPending, error } = useLogin();
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
 
-  const queryClient = useQueryClient();
-
-  const { mutate, isError, isPending, error } = useMutation({
-    mutationFn: async ({ username, password }) => {
-      try {
-        const res = await fetch("/api/auth/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ username, password }),
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || "Failed to login to your account.");
-        }
-
-        return data;
-      } catch (error) {
-        console.error(error);
-        throw error;
-      }
-    },
-    onSuccess: () => {
-      toast.success("Logged in Successfully");
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.AUTH_USER] });
-    },
-  });
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    mutate(formData);
+    login(formData);
   };
 
   const handleInputChange = (e) => {

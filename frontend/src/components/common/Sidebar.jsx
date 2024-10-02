@@ -9,35 +9,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import LoadingSpinner from "./LoadingSpinner";
 import { QUERY_KEYS } from "../../constants";
+import useLogout from "../../hooks/useLogout";
 
 const Sidebar = () => {
-  const queryClient = useQueryClient();
-
-  const { mutate: logout, isPending } = useMutation({
-    mutationFn: async () => {
-      try {
-        const res = await fetch("/api/auth/logout", {
-          method: "POST",
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.error || "An Error occoured logging you out.");
-        }
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
-    onSuccess: () => {
-      toast.success("Logout successful");
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.AUTH_USER] });
-      queryClient.setQueryData([QUERY_KEYS.AUTH_USER], null);
-    },
-    onError: () => {
-      toast.error("Logout failed");
-    },
-  });
+  const {logout, isPending} = useLogout();
 
   const { data: authUser } = useQuery({ queryKey: [QUERY_KEYS.AUTH_USER] });
 

@@ -13,27 +13,30 @@ import RightPanel from "./components/common/RightPanel";
 import { useQuery } from "@tanstack/react-query";
 import LoadingSpinner from "./components/common/LoadingSpinner";
 import { QUERY_KEYS } from "./constants";
+import useAuthUser from "./hooks/useAuthUser";
 
 const App = () => {
-  const { data: authUser, isLoading } = useQuery({
-    queryKey: [QUERY_KEYS.AUTH_USER],
-    queryFn: async () => {
-      try {
-        const res = await fetch("api/auth/me");
-        const data = await res.json();
+  // const { data: authUser, isLoading } = useQuery({
+  //   queryKey: [QUERY_KEYS.AUTH_USER],
+  //   queryFn: async () => {
+  //     try {
+  //       const res = await fetch("api/auth/me");
+  //       const data = await res.json();
 
-        if (!res.ok) {
-          throw new Error(data.error || "Something went wrong");
-        }
+  //       if (!res.ok) {
+  //         throw new Error(data.error || "Something went wrong");
+  //       }
 
-        console.log("authUser is : ", data);
-        return data;
-      } catch (error) {
-        throw new Error(error);
-      }
-    },
-    retry: false,
-  });
+  //       console.log("authUser is : ", data);
+  //       return data;
+  //     } catch (error) {
+  //       throw new Error(error);
+  //     }
+  //   },
+  //   retry: false,
+  // });
+
+  const { authUser, isLoading } = useAuthUser();
 
   if (isLoading) {
     return (

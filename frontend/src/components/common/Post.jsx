@@ -9,40 +9,18 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEYS } from "../../constants";
 import toast from "react-hot-toast";
 import LoadingSpinner from "./LoadingSpinner";
+import useDeletePost from "../../hooks/useDeletePost";
 
 const Post = ({ post }) => {
-	const queryClient = useQueryClient();
-
 	const [comment, setComment] = useState("");
 
 	const { data: authUser } = useQuery({
 		queryKey: [QUERY_KEYS.AUTH_USER],
 	});
-
+	
 	const isMyPost = authUser._id === post.user._id;
-
-	const { mutate: deletePost, isPending } = useMutation({
-		mutationFn: async () => {
-			try {
-				const res = await fetch(`/api/post/${post._id}`, {
-					method: "DELETE",
-				});
-				const data = await res.json();
-
-				if (!res.ok) {
-					throw new Error(data.error || "Something went wrong");
-				}
-
-				return data;
-			} catch (error) {
-				throw new Error(error);
-			}
-		},
-		onSuccess: () => {
-			toast.success("Post deleted successfully");
-			queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.POSTS] });
-		},
-	});
+	
+	const { deletePost, isPending } = useDeletePost()
 
 	const postOwner = post.user;
 	const isLiked = false;
@@ -53,7 +31,7 @@ const Post = ({ post }) => {
 	const isCommenting = false;
 
 	const handleDeletePost = () => {
-		deletePost();
+		deletePost(post._id);
 	};
 
 	const handlePostComment = (e) => {

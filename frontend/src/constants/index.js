@@ -1,6 +1,7 @@
 export const QUERY_KEYS = {
   AUTH_USER: "authUser",
   POSTS: "posts",
+  SUGGESTED_USERS: "suggestedUsers",
 };
 
 export const getPostEndpoint = (feedType) => {
