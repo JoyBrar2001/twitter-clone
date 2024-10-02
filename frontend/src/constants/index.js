@@ -2,6 +2,7 @@ export const QUERY_KEYS = {
   AUTH_USER: "authUser",
   POSTS: "posts",
   SUGGESTED_USERS: "suggestedUsers",
+  NOTIFICATIONS: "notifications",
 };
 
 export const getPostEndpoint = (feedType) => {
