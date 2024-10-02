@@ -80,7 +80,7 @@ const getFollowingPosts = async (req, res) => {
         select: "-password",
       });
 
-    return res.status(200).json({ message: feedPosts });
+    return res.status(200).json(feedPosts);
   } catch (error) {
     console.log("Error in getFollowingPosts controller: ", error.message);
 
@@ -155,7 +155,7 @@ const createPost = async (req, res) => {
 
 const deletePost = async (req, res) => {
   try {
-    const { postId } = req.params;
+    const { id: postId } = req.params;
     const post = await Post.findById(postId);
 
     if (!post) {
