@@ -4,8 +4,8 @@ import { getPostEndpoint, QUERY_KEYS } from "../../constants";
 import { useEffect } from "react";
 import useFetchPosts from "../../hooks/useFetchPosts";
 
-const Posts = ({ feedType }) => {
-  const POST_ENDPOINT = getPostEndpoint(feedType);
+const Posts = ({ feedType, username }) => {
+  const POST_ENDPOINT = getPostEndpoint(feedType, username);
 
   const { posts, isLoading, refetch, isRefetching } = useFetchPosts(POST_ENDPOINT);
 
