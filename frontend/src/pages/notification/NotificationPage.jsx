@@ -13,49 +13,6 @@ import useDeleteNotifications from "../../hooks/useDeleteNotifications";
 const NotificationPage = () => {
 	const { notifications, isLoading } = useGetNotifications();
 	const { deleteNotifications, isPending } = useDeleteNotifications();
-	// const { data: notifications, isLoading } = useQuery({
-	// 	queryKey: [QUERY_KEYS.NOTIFICATIONS],
-	// 	queryFn: async () => {
-	// 		try {
-	// 			const res = await fetch("/api/notification");
-	// 			const data = await res.json();
-
-	// 			if (!res.ok) {
-	// 				throw new Error(data.error || "Something went wrong");
-	// 			}
-
-	// 			return data;
-	// 		} catch (error) {
-	// 			throw new Error(error);
-	// 		}
-	// 	},
-	// });
-
-	// const isLoading = false;
-	// const notifications = [
-	// 	{
-	// 		_id: "1",
-	// 		from: {
-	// 			_id: "1",
-	// 			username: "johndoe",
-	// 			profileImg: "/avatars/boy2.png",
-	// 		},
-	// 		type: "follow",
-	// 	},
-	// 	{
-	// 		_id: "2",
-	// 		from: {
-	// 			_id: "2",
-	// 			username: "janedoe",
-	// 			profileImg: "/avatars/girl1.png",
-	// 		},
-	// 		type: "like",
-	// 	},
-	// ];
-
-	// const deleteNotifications = () => {
-	// 	alert("All notifications deleted");
-	// };
 
 	return (
 		<>

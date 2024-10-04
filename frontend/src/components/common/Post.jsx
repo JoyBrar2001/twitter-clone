@@ -15,9 +15,7 @@ import useCommentPost from "../../hooks/useCommentPost";
 import { formatPostDate } from "../../utils/date";
 
 const Post = ({ post }) => {
-	const { data: authUser } = useQuery({
-		queryKey: [QUERY_KEYS.AUTH_USER],
-	});
+	const { data: authUser } = useQuery({ queryKey: [QUERY_KEYS.AUTH_USER] });
 
 	const isMyPost = authUser?._id === post.user?._id;
 	const postOwner = post?.user || {};
